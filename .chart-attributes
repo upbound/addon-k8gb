@@ -1,0 +1,4 @@
+CHART_NAME=k8gb
+CHART_VERSION=v1.0.0
+RELEASE_NAME=k8gb
+REPO_URL=https://www.k8gb.io

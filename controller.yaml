@@ -1,0 +1,30 @@
+apiVersion: meta.pkg.upbound.io/v1alpha1
+kind: Controller
+metadata:
+  annotations:
+    friendly-name.meta.crossplane.io: K8GB
+    meta.crossplane.io/description: |
+      K8GB is a Kubernetes Global Balancer — a cloud native global load
+      balancer that provides multi-cluster DNS-based failover and load
+      balancing with no dependency on a managed control plane.
+    meta.crossplane.io/license: Apache-2.0
+    meta.crossplane.io/maintainer: Upbound Maintainers <info@upbound.io>
+    meta.crossplane.io/readme: |
+      K8GB spreads application traffic across Kubernetes clusters in different
+      regions using standard DNS. It runs entirely inside the clusters it
+      balances, using CoreDNS with the k8gb CRD plugin to serve the delegated
+      GSLB zone, and reconciles Gslb and ZoneDelegation custom resources.
+    meta.crossplane.io/source: https://github.com/k8gb-io/k8gb
+  name: k8gb
+spec:
+  packagingType: Helm
+  helm:
+    releaseName: k8gb
+    releaseNamespace: k8gb-system
+    values:
+      k8gb:
+        imageRepo: xpkg.upbound.io/upbound/k8gb
+      coredns:
+        image:
+          repository: xpkg.upbound.io/upbound/k8gb-k8s-crd
+          tag: v0.6.0
