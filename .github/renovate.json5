@@ -3,14 +3,25 @@
   extends: [
     'config:recommended',
   ],
+  // Renovate only bumps the upstream chart in .chart-attributes. It never
+  // touches its own config or the workflows, and nothing merges without review:
+  // a merge to main publishes the package to the Marketplace.
+  enabledManagers: [
+    'custom.regex',
+  ],
+  configMigration: false,
+  automerge: false,
   labels: [
+    'automated',
     'renovate',
   ],
+  separateMultipleMajor: true,
   customManagers: [
     {
       customType: 'regex',
+      description: 'Bump the upstream Helm chart in .chart-attributes',
       managerFilePatterns: [
-        '/.chart-attributes$/',
+        '/(^|/)\\.chart-attributes$/',
       ],
       matchStringsStrategy: 'combination',
       matchStrings: [
@@ -24,44 +35,16 @@
   ],
   packageRules: [
     {
-      matchUpdateTypes: [
-        'major',
-      ],
-      addLabels: [
-        'major-update',
-      ],
+      matchUpdateTypes: ['major'],
+      addLabels: ['major-update'],
     },
     {
-      matchUpdateTypes: [
-        'minor',
-      ],
-      addLabels: [
-        'minor-update',
-      ],
+      matchUpdateTypes: ['minor'],
+      addLabels: ['minor-update'],
     },
     {
-      matchUpdateTypes: [
-        'patch',
-      ],
-      addLabels: [
-        'patch-update',
-      ],
-    },
-    {
-      separateMajorMinor: true,
-      separateMinorPatch: true,
-      separateMultipleMajor: true,
-      separateMultipleMinor: true,
-      matchUpdateTypes: [
-        'minor',
-        'patch',
-        'pin',
-        'digest',
-      ],
-      matchDepNames: [
-        'k8gb'
-      ],
-      automerge: true,
+      matchUpdateTypes: ['patch'],
+      addLabels: ['patch-update'],
     },
   ],
 }
